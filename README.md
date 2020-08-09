@@ -9,8 +9,10 @@ All code files are in Stata ".do" format. To run requires the Stata (commercial)
 
 The git folder will be the home directory for analyses. 
 If you need to 
-1. Re-download the data, use the "Stata Do/NHANESdownload.do" file
-2. Re-merge the data, use the "Stata Do/NHANESdownload.do" file
-3. Re-analyze the data, use the "Stata Do/NHANESanalysis.do" file
+1. Re-download the data, use the "Do/NHANESdownload.do" file
+2. Re-merge the data, use the "Do/NHANESdownload.do" file
+3. Re-analyze the data, use the "Do/NHANESanalysis.do" file
 
 You will have to edit the folder references in the above files for everything to work properly. Make sure they make sense for your machine.
+
+The folder "Data" contains the already downloaded data files and the folder "Tables" contains the generated tables in Microsoft ".xlsx" format.
