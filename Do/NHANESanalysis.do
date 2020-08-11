@@ -62,9 +62,15 @@ putexcel E1 = "p-value"
 * Numbers of patients
 global index = 3
 di $index
+tab periodont_stage, matcell(cnt1)
+putexcel A$index = "Number of observations"
+putexcel B$index = cnt1[1,1]
+putexcel C$index = cnt1[2,1]
+putexcel D$index = cnt1[3,1]
+global index = $index + 1
 svy: tab periodont_stage, count format(%13.2fc)
 mat cnt = e(b) * e(N_pop)
-putexcel A$index = "Number of Patients"
+putexcel A$index = "Equivalent population number"
 putexcel B$index = cnt[1,1]
 putexcel C$index = cnt[1,2]
 putexcel D$index = cnt[1,3]
@@ -146,6 +152,23 @@ do "$cat" alcohol "Any alcohol consumption" $index
 * Physical activity
 do "$cont" phys "Physical activity (min/day)" $index
 }
+
+********************** Prevalence Data *******************************
+putexcel set "Tables/tables.xlsx", sheet("Prevalence") modify
+putexcel A1 = "Variable"
+putexcel A2 = "CAD and/or Stroke"
+quietly estpost svy: tab cad_stroke, col percent
+mat cad_mat = e(b)
+putexcel B2 = cad_mat[1,2], nformat("#.#")
+putexcel A4 = "Periodontal disease stage"
+putexcel B4 = "Stage 1"
+putexcel C4 = "Stage 2"
+putexcel D4 = "Stage 3 – Stage 4"
+quietly estpost svy: tab periodont_stage, col percent
+mat ps_mat = e(b)
+putexcel B5 = ps_mat[1,1], nformat("#.#")
+putexcel C5 = ps_mat[1,2], nformat("#.#")
+putexcel D5 = ps_mat[1,3], nformat("#.#")
 
 ********************** Univariable analysis *******************************
 putexcel set "Tables/tables.xlsx", sheet("Univariate Regression") modify
