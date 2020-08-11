@@ -159,7 +159,7 @@ putexcel A1 = "Variable"
 putexcel A2 = "CAD and/or Stroke"
 quietly estpost svy: tab cad_stroke, col percent
 mat cad_mat = e(b)
-putexcel B2 = cad_mat[1,2], nformat("#.#")
+putexcel B2 = cad_mat[1,2], nformat("#.##")
 putexcel A4 = "Periodontal disease stage"
 putexcel B4 = "Stage 1"
 putexcel C4 = "Stage 2"
