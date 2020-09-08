@@ -17,9 +17,9 @@ svyset [pweight=sample_weight_med_exam], strata (var_stratum) psu(var_psu) singl
 
 
 * set confounder variables
-local confounders age_gt65 male white married edu_lte_hs ib4.inc_cat bmi current_smoker diabetes htn hchol ckd alcohol phys
+local confounders age_gt65 male white married edu_lte_hs ib4.inc_cat bmi current_smoker diabetes htn hchol ckd alcohol
 
-local confounder_names `" "Age ≥ 65" "Male" "Non-hispanic white" "Ever married" "High school graduate or less" "Annual household income" "Body Mass Index" "Current smoker" "Diabetes" "Hypertension" "High cholesterol" "Chronic kidney disease" "Alcohol" "Physical activity" "'
+local confounder_names `" "Age ≥ 65" "Male" "Non-hispanic white" "Marital Status (not-currently married)" "High school graduate or less" "Annual household income" "BMI (kg/m2)" "Current cigarette smoker" "Diabetes mellitus" "Hypertension" "Hyperlipidemia" "Chronic kidney disease" "Any alcohol use" "'
 
 * set regression variables of interest
 local  ps_vars i.periodont_stage `confounders'
@@ -71,14 +71,14 @@ global index = $index + 1
 svy: tab periodont_stage, count format(%13.2fc)
 mat cnt = e(b) * e(N_pop)
 putexcel A$index = "Equivalent population number"
-putexcel B$index = cnt[1,1]
-putexcel C$index = cnt[1,2]
-putexcel D$index = cnt[1,3]
+putexcel B$index = cnt[1,1], nformat(#,###)
+putexcel C$index = cnt[1,2], nformat(#,###)
+putexcel D$index = cnt[1,3], nformat(#,###)
 global index = $index + 1
 
 quietly{
 * age 
-do "$cont" age "Age in years (S.D.)" $index
+do "$cont" age "Age (years)" $index
 
 * male :
 do "$cat" male "Male" $index
@@ -87,7 +87,7 @@ do "$cat" male "Male" $index
 do "$cat" white "Non-hispanic white" $index
 
 * marriage :
-do "$cat" married "Ever married" $index
+do "$cat" married "Marital Status (not-currently)" $index
 
 * education :
 do "$cat" edu_lte_hs "High School or less" $index
@@ -96,13 +96,13 @@ do "$cat" edu_lte_hs "High School or less" $index
 do "$cat" inc_cat "Annual household income" $index
 
 * bmi 
-do "$cont" bmi "Body Mass Index (kg/m2)" $index
+do "$cont" bmi "BMI (kg/m2)" $index
 
 * SBP
-do "$cont" systolic "Systolic blood pressure (mmHg)" $index
+do "$cont" systolic "SBP (mmHg)" $index
 
 * DBP
-do "$cont" diastolic "Diastolic blood pressure (mmHg)" $index
+do "$cont" diastolic "DBP (mmHg)" $index
 
 
 * CAD/stroke
@@ -112,7 +112,7 @@ do "$cat" cad_stroke "Coronary artery disease and stroke" $index
 do "$cat" current_smoker "Current cigarette smoker" $index
 
 * DM
-do "$cat" diabetes "Diabetes" $index
+do "$cat" diabetes "Diabetes mellitus" $index
 
 * HTN
 do "$cat" htn "Hypertension" $index
@@ -123,7 +123,7 @@ do "$cat" htn "Hypertension" $index
 svyset [pweight=sample_weight_triglycerides], strata (var_stratum) psu(var_psu) singleunit(centered)
 
 * high cholesterol
-do "$cat" hchol "High Cholesterol Diagnosis" $index
+do "$cat" hchol "Hyperlipidemia" $index
 
 
 * total cholesterol
@@ -147,10 +147,10 @@ svyset [pweight=sample_weight_med_exam], strata (var_stratum) psu(var_psu) singl
 do "$cat" ckd "Chronic kidney disease" $index
 
 * Alcohol
-do "$cat" alcohol "Any alcohol consumption" $index
+do "$cat" alcohol "Any alcohol use" $index
 
-* Physical activity
-do "$cont" phys "Physical activity (min/day)" $index
+// * Physical activity
+// do "$cont" phys "Physical activity (min/day)" $index
 }
 
 ********************** Prevalence Data *******************************

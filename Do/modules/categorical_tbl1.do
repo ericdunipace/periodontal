@@ -4,7 +4,16 @@ putexcel A`idx' = "`2'"
 
 
 estpost svy: tab `1' periodont_stage, col percent
-putexcel E`idx' = `e(p_Pear)'
+local pval_temp = `e(p_Pear)'
+if `pval_temp' < 0.0001 {
+	local pval_temp = "<0.0001"
+} 
+else {
+	local pval_temp = string(`pval_temp', "%9.4f")
+}
+putexcel E`idx' = "`pval_temp'"
+
+// putexcel E`idx' = `e(p_Pear)'
 mat temp_tab = e(b)
 
 local ncol = colsof(temp_tab)/(3 + 1)
@@ -13,7 +22,9 @@ if `ncol' == 3 {
 		local colnum = `a' + 1
 		local col: word `colnum' of `c(ALPHA)'
 		local sel = (`a' - 1) * 3 + 2
-		putexcel `col'`idx' = temp_tab[1,`sel'], nformat("#.#")
+		local cellpercent = string(temp_tab[1,`sel'],"%9.1f")
+		putexcel `col'`idx' = "`cellpercent'%"
+		//putexcel `col'`idx' = temp_tab[1,`sel'], nformat("#.#")
 	}
 	local idx = `idx' + 1
 }
@@ -29,7 +40,9 @@ else if `ncol' > 3 {
 			local colnum = `a' + 1
 			local col: word `colnum' of `c(ALPHA)'
 			local sel = `b' + (`nrow' + 1) * (`a' - 1)
-			putexcel `col'`idx' = temp_tab[1,`sel'], nformat("#.#")
+			local cellpercent = string(temp_tab[1,`sel'],"%9.1f")
+			putexcel `col'`idx' = "`cellpercent'%"
+			//putexcel `col'`idx' = temp_tab[1,`sel'], nformat("#.#")
 		}
 		local idx = `idx' + 1
 	}

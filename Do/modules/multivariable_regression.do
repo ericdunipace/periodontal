@@ -33,7 +33,15 @@ forvalues i = 1/`n' {
 		if `pos' > 1 {
 			local testvar = "i.`curvar'"
 			testparm `testvar'
-			putexcel C`idx' = `r(p)'
+			local pval_temp = `r(p)'
+			if `pval_temp' < 0.0001 {
+				local pval_temp = "<0.0001"
+			} 
+			else {
+				local pval_temp = string(`pval_temp', "%9.4f")
+			}
+
+			putexcel C`idx' = "`pval_temp'"
 			local idx = `idx' + 1
 			putexcel A`idx' = `"`:label(`curvar') `label_idx''"'
 		}
@@ -49,12 +57,20 @@ forvalues i = 1/`n' {
 		local val = string(reg_tab[1,`i'] ,"%9.2f")
 		local lstring = string(lw[1,`i'] ,"%9.2f")
 		local ustring = string(up[1,`i'] ,"%9.2f")
-		local output = "`val' (`lstring', `ustring')"
+		local output = "`val' (`lstring' – `ustring')"
 	}
 		
 		
 	putexcel B`idx' = "`output'"
-	putexcel C`idx' = pval[1,`i']
+	local pval_temp = pval[1,`i']
+	if `pval_temp' < 0.0001 {
+		local pval_temp = "<0.0001"
+	} 
+	else {
+		local pval_temp = string(`pval_temp', "%9.4f")
+	}
+	putexcel C`idx' = "`pval_temp'"
+// 	putexcel C`idx' = pval[1,`i'], nformat("#.####")
 	
 	local idx = `idx' + 1 
 	local oldvar = "`curvar'"
@@ -71,7 +87,14 @@ local F = string(`r(F)',"%9.2f")
 
 putexcel A`idx' = "Goodness of fit"
 putexcel B`idx' = "F(`df1', `df2') = `F' "
-putexcel C`idx' = `r(p)'
+local pval_temp = `r(p)'
+if `pval_temp' < 0.0001 {
+	local pval_temp = "<0.0001"
+} 
+else {
+	local pval_temp = string(`pval_temp', "%9.4f")
+}
+putexcel C`idx' = "`pval_temp'"
 
 
 global index = `idx'

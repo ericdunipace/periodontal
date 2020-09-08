@@ -7,8 +7,15 @@ mat reg_tab = r(table)
 mat coef = reg_tab[1,1...]
 mat lw = reg_tab[5,1...]
 mat up = reg_tab[6,1...]
+local pval = `e(p)'
+if `pval' < 0.0001 {
+	local pval = "<0.0001"
+} 
+else {
+	local pval = string(`pval', "%9.4f")
+}
 
-putexcel C`idx' = `e(p)'
+putexcel C`idx' = "`pval'"
 
 local names : colfullnames e(b)
 
@@ -42,7 +49,7 @@ if `ncol' > 2 {
 // 			di "upper"
 			local ustring = string(up[1,`b'] ,"%9.2f")
 // 			di "output"
-			local output = "`val' (`lstring', `ustring')"
+			local output = "`val' (`lstring' – `ustring')"
 		}
 		
 		
@@ -57,7 +64,7 @@ else {
 	local val = string(reg_tab[1,1] ,"%9.2f")
 	local lstring = string(lw[1,1] ,"%9.2f")
 	local ustring = string(up[1,1] ,"%9.2f")
-	local output = "`val' (`lstring', `ustring')"
+	local output = "`val' (`lstring' – `ustring')"
 	putexcel B`idx' = "`output'"
 	local idx = `idx' + 1
 }

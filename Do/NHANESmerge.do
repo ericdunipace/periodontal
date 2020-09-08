@@ -63,6 +63,7 @@ drop  _merge
 
 keep seqn ohx02lad ohx02las ohx02lap ohx02laa ohx03lad ohx03las ohx03lap ohx03laa ohx04lad ohx04las ohx04lap ohx04laa ohx05lad ohx05las ohx05lap ohx05laa ohx06lad ohx06las ohx06lap ohx06laa ohx07lad ohx07las ohx07lap ohx07laa ohx08lad ohx08las ohx08lap ohx08laa ohx09lad ohx09las ohx09lap ohx09laa ohx10lad ohx10las ohx10lap ohx10laa ohx11lad ohx11las ohx11lap ohx11laa ohx12lad ohx12las ohx12lap ohx12laa ohx13lad ohx13las ohx13lap ohx13laa ohx14lad ohx14las ohx14lap ohx14laa ohx15lad ohx15las ohx15lap ohx15laa ohx18lad ohx18las ohx18lap ohx18laa ohx19lad ohx19las ohx19lap ohx19laa ohx20lad ohx20las ohx20lap ohx20laa ohx21lad ohx21las ohx21lap ohx21laa ohx22lad ohx22las ohx22lap ohx22laa ohx23lad ohx23las ohx23lap ohx23laa ohx24lad ohx24las ohx24lap ohx24laa ohx25lad ohx25las ohx25lap ohx25laa ohx26lad ohx26las ohx26lap ohx26laa ohx27lad ohx27las ohx27lap ohx27laa ohx28lad ohx28las ohx28lap ohx28laa ohx29lad ohx29las ohx29lap ohx29laa ohx30lad ohx30las ohx30lap ohx30laa ohx31lad ohx31las ohx31lap ohx31laa wtint2yr wtmec2yr sdmvpsu sdmvstra seqn ridageyr riagendr indhhin2 bpq080 bpq020 bpq030 bmxbmi mcq160b mcq160c mcq160d mcq160e mcq160f diq010 kiq022 smq040 smq020 ind235 ohq845 ridreth3 dmdmartl dmdeduc2 bpxsy1 bpxdi1 lbxtr lbdldl wtsaf2yr lbdhdd lbxtc alq101 pad615 pad630 pad645 pad660 pad675
 
+// change 99 (missing) to missing in Stata format
 recode ohx02lad ohx02las ohx02lap ohx02laa ohx03lad ohx03las ohx03lap ohx03laa ohx04lad ohx04las ohx04lap ohx04laa ohx05lad ohx05las ohx05lap ohx05laa ohx06lad ohx06las ohx06lap ohx06laa ohx07lad ohx07las ohx07lap ohx07laa ohx08lad ohx08las ohx08lap ohx08laa ohx09lad ohx09las ohx09lap ohx09laa ohx10lad ohx10las ohx10lap ohx10laa ohx11lad ohx11las ohx11lap ohx11laa ohx12lad ohx12las ohx12lap ohx12laa ohx13lad ohx13las ohx13lap ohx13laa ohx14lad ohx14las ohx14lap ohx14laa ohx15lad ohx15las ohx15lap ohx15laa ohx18lad ohx18las ohx18lap ohx18laa ohx19lad ohx19las ohx19lap ohx19laa ohx20lad ohx20las ohx20lap ohx20laa ohx21lad ohx21las ohx21lap ohx21laa ohx22lad ohx22las ohx22lap ohx22laa ohx23lad ohx23las ohx23lap ohx23laa ohx24lad ohx24las ohx24lap ohx24laa ohx25lad ohx25las ohx25lap ohx25laa ohx26lad ohx26las ohx26lap ohx26laa ohx27lad ohx27las ohx27lap ohx27laa ohx28lad ohx28las ohx28lap ohx28laa ohx29lad ohx29las ohx29lap ohx29laa ohx30lad ohx30las ohx30lap ohx30laa ohx31lad ohx31las ohx31lap ohx31laa (99=.)
 
 
@@ -295,10 +296,11 @@ label values male yn_l
 // .	Missing	4406	10175	
 
 gen married = .
-replace married = 0 if dmdmartl == 5 | dmdmartl == 6
-replace married = 1 if dmdmartl == 1 | dmdmartl == 2 | dmdmartl == 3 | dmdmartl == 4
-label values married yn_l
-label variable eth "Ever married (No/Yes)"
+replace married = 1 if dmdmartl == 2 | dmdmartl == 3 | dmdmartl == 4 | dmdmartl == 5 | dmdmartl == 6
+replace married = 0 if dmdmartl == 1 
+label define not_married 0 "Yes" 1 "No"
+label values married not_married
+label variable married "Currently married (Yes = 0 / No = 1)"
 
 // general marital status
 gen marital_status = .
