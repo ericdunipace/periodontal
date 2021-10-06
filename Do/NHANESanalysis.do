@@ -17,9 +17,9 @@ svyset [pweight=sample_weight_med_exam], strata (var_stratum) psu(var_psu) singl
 
 
 * set confounder variables
-local confounders age_gt65 male white married edu_lte_hs ib4.inc_cat bmi current_smoker diabetes htn hchol ckd alcohol
+local confounders age_gt65 male white edu_lte_hs ib4.inc_cat bmi current_smoker diabetes htn hchol ckd alcohol
 
-local confounder_names `" "Age ≥ 65" "Male" "Non-hispanic white" "Marital Status (not-currently married)" "High school graduate or less" "Annual household income" "BMI (kg/m2)" "Current cigarette smoker" "Diabetes mellitus" "Hypertension" "Hyperlipidemia" "Chronic kidney disease" "Any alcohol use" "'
+local confounder_names `" "Age ≥ 65" "Male" "Non-hispanic white" "High school graduate or less" "Annual household income" "BMI (kg/m2)" "Current cigarette smoker" "Diabetes mellitus" "Hypertension" "Hyperlipidemia" "Chronic kidney disease" "Any alcohol use" "'
 
 * set regression variables of interest
 local  ps_vars i.periodont_stage `confounders'
@@ -86,8 +86,8 @@ do "$cat" male "Male" $index
 * white :
 do "$cat" white "Non-hispanic white" $index
 
-* marriage :
-do "$cat" married "Marital Status (not-currently)" $index
+// * marriage :
+// do "$cat" married "Marital Status (not-currently)" $index
 
 * education :
 do "$cat" edu_lte_hs "High School or less" $index
@@ -159,16 +159,32 @@ putexcel A1 = "Variable"
 putexcel A2 = "CAD and/or Stroke"
 quietly estpost svy: tab cad_stroke, col percent
 mat cad_mat = e(b)
-putexcel B2 = cad_mat[1,2], nformat("#.##")
+mat cad_lb = e(lb)
+mat cad_ub = e(ub)
+local pd_num = string(cad_mat[1,2], "%9.2f")
+local pd_lb = string(cad_lb[1,2], "%9.2f")
+local pd_ub = string(cad_ub[1,2], "%9.2f")
+putexcel B2 = "`pd_num' (`pd_lb'–`pd_ub')"
 putexcel A4 = "Periodontal disease stage"
 putexcel B4 = "Stage 1"
 putexcel C4 = "Stage 2"
 putexcel D4 = "Stage 3 – Stage 4"
 quietly estpost svy: tab periodont_stage, col percent
 mat ps_mat = e(b)
-putexcel B5 = ps_mat[1,1], nformat("#.#")
-putexcel C5 = ps_mat[1,2], nformat("#.#")
-putexcel D5 = ps_mat[1,3], nformat("#.#")
+mat ps_lb = e(lb)
+mat ps_ub = e(ub)
+local ps1_num = string(ps_mat[1,1], "%9.2f")
+local ps2_num = string(ps_mat[1,2], "%9.2f")
+local ps3_num = string(ps_mat[1,3], "%9.2f")
+local ps1_lb = string(ps_lb[1,1], "%9.2f")
+local ps2_lb= string(ps_lb[1,2], "%9.2f")
+local ps3_lb = string(ps_lb[1,3], "%9.2f")
+local ps1_ub = string(ps_ub[1,1], "%9.2f")
+local ps2_ub= string(ps_ub[1,2], "%9.2f")
+local ps3_ub = string(ps_ub[1,3], "%9.2f")
+putexcel B5 = "`ps1_num' (`ps1_lb'–`ps1_ub')"
+putexcel C5 = "`ps2_num' (`ps2_lb'–`ps2_ub')"
+putexcel D5 = "`ps3_num' (`ps3_lb'–`ps3_ub')"
 
 ********************** Univariable analysis *******************************
 putexcel set "Tables/tables.xlsx", sheet("Univariate Regression") modify
