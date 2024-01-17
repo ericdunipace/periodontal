@@ -1,6 +1,8 @@
 # Association between periodontal disease and CAD + Stroke
 
-This repository replicates the code in a paper examining the association between periodontal disease stage and the occurence of coronary artery disease + stroke. To download the code,
+This repository replicates the code in a [paper](https://pubmed.ncbi.nlm.nih.gov/35773046/) examining the association between periodontal disease stage and the occurence of coronary artery disease + stroke. *NB*: this code was modified after by the first two authors who have not made their results reproducible. The results should be roughly the same but this is why there would be any differences.
+
+To download the code,
 
 1. Click on "Code"
 2. Either download a zip file or clone the repository
